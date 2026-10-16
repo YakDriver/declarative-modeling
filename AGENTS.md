@@ -19,10 +19,16 @@ Cutting is the default fix. Moving text to a better file is the second choice.
 ## Layout
 
 ```text
-case-studies/   one file per system or approach, kebab-case (magic-modules.md)
+case-studies/                     one file per system or approach (magic-modules.md)
+concepts/                         one idea per file that applies to any system (authority.md)
+terraform-provider-aws/findings/  dated measurements of the provider, one topic per file
+terraform-provider-aws/options/   the provider's design options, and the ones ruled out
+plan/                             what's decided for the provider and what happens next
 ```
 
-Add a directory when there's content for it, not before.
+Add a directory when there's content for it, not before. Use kebab-case filenames.
+
+Some content is general and some is about one project. A **concept** should make sense to someone who has never heard of the Terraform AWS provider. Anything that only makes sense for the provider goes under `terraform-provider-aws/` or `plan/`.
 
 ## Case studies
 
@@ -36,6 +42,22 @@ A case study covers one system. Use these sections, in this order, and leave out
 - **Sources**: links, each with the date it was read.
 
 Link to other case studies instead of re-explaining them.
+
+## Concepts
+
+One idea per file. The first line states the idea as a claim. Then the mechanism, then at least one concrete example, preferably from a case study, linked. No Sources section is needed when every example links to a case study or finding.
+
+## Findings
+
+One topic per file. Each number says what was counted and when (a commit or a date), plus the command when it can be re-run. Measurements made before this repository existed may give the date and what was counted without the command. Findings report; they don't recommend. Recommendations go in `plan/`.
+
+## Options
+
+An option says what would change, a short sketch in real code, and what's good and bad about it. A rejected option keeps one line on why, so it isn't proposed again.
+
+## Plan
+
+The top says the status and its date. Decisions carry their reason in a sentence. Next steps are small pieces that are each worth doing even if the rest of the plan never happens. Parked items say what would bring them back.
 
 ## Evidence
 
@@ -64,6 +86,7 @@ Write for a technical reader who is busy and skeptical. They will skim first and
 - Don't force symmetry. Not every list needs three items, and a weak side doesn't need a matching strong side. Give the important point the most words.
 - No closing summary. End when the content ends.
 - Use one name for one concept, and repeat it exactly. Don't swap in synonyms for variety.
+- No private shorthand. Don't refer to things by labels a reader would have to look up (Q0, R2, J1, E2, §3.4). Name the thing, and link the file it lives in.
 - Use a table when the reader is comparing things, a list when order matters or items are separate, and prose otherwise.
 - Code snippets are real, short (about 15 lines or fewer), and show the point, not the setup.
 
