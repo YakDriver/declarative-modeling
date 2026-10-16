@@ -28,7 +28,7 @@ Add a directory when there's content for it, not before.
 
 A case study covers one system. Use these sections, in this order, and leave out any that would be empty:
 
-- **Summary**: one or two sentences. What it is and the single most useful thing to know about it.
+- **Summary**: one or two sentences. Who runs it and at what scale (Google's Terraform providers, thousands of Kubernetes controllers), then the single most useful thing to know about it. Readers decide whether to care based on who's doing it.
 - **How it works**: where resource facts are authored (external file, IDL, comment markers, host-language values) and what consumes them (a generator, a shared runtime, both). A short real snippet if it helps.
 - **What works**
 - **What doesn't**
