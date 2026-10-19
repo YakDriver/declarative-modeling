@@ -28,5 +28,5 @@ It meets the real need behind one authored surface per resource: seeing all of a
 
 ## Bad
 
-- It's only as complete as what it reads. Registration, tags, and identity are already parsed in one place: `servicepackage` was refactored in September 2026 to pre-parse annotations into a list, and identity facts go through a shared layer ([generators](../findings/generators.md)). `@Testing` keys, `generate.go` wiring, and service metadata would each need their own reader.
+- It's only as complete as what it reads. Registration, tags, and identity are already parsed in one place: `servicepackage` was refactored in September 2026 to pre-parse annotations into a list (commit `cf5851077a8`), and identity facts go through a shared layer ([generators](../findings/generators.md)). `@Testing` keys, `generate.go` wiring, and service metadata would each need their own reader.
 - Another generator to maintain, in a directory tree where 28 of 29 generator directories have no tests ([generators](../findings/generators.md)). It needs characterization tests like the rest.
