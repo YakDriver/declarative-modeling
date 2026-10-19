@@ -1,4 +1,6 @@
-# Tidying Software
+# Software KonMari
+
+Deciding what a codebase keeps, where each thing lives, and how to retire a design that stopped earning its place.
 
 What would Marie Kondo do with a codebase? I don't think she'd start by deleting things. Her method is mostly about deciding what to keep and where it lives. The deleting falls out of that.
 
