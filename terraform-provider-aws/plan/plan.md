@@ -40,7 +40,7 @@ Each returns when its condition holds.
 
 - **Registration redesign** (deriving the public type name, authored-literal versus directive forms, factory discovery). Returns if a derivation with a loud-failing rule is proven, or the team decides to take the redesign on.
 - **Move `@Testing` to `_test.go` as a pilot.** Returns if the team decides a relocation counts as the migration unit and accepts relaxing the `_test.go` exclusion in the generator walker ([generators](../findings/generators.md)).
-- **`make resource-info` generated report.** Returns if discoverability becomes the blocking disagreement again; it supplies a per-concern view without moving authority ([other-ideas](../options/other-ideas.md)).
+- **`make resource-info` generated report.** Returns if discoverability becomes the blocking disagreement again; it supplies a per-concern view without moving authority ([resource-report](../options/resource-report.md)).
 - **The judgment calls**, none settled by measurement: explicit type name versus zero authoring; whether an authored literal is too dense to review; whether facts live with the resource or with the concern; whether uniformity across plugin frameworks is required. Each returns when a piece forces it or a maintainer decides it ([criteria](../options/criteria.md)).
 
 ## Cut

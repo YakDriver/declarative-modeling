@@ -26,6 +26,10 @@ The fourteen criteria for comparing options are in [criteria.md](criteria.md).
 
 A shared semantic model that several generators read is detailed in [shared-implementation.md](shared-implementation.md). Options ruled out on evidence are in [ruled-out.md](ruled-out.md); smaller ideas not tied to a question are in [other-ideas.md](other-ideas.md).
 
+## Works with any choice
+
+- [Generated resource report](resource-report.md): `make resource-info` prints every fact about one resource with its file and line, a view that needs no migration and survives any representation.
+
 ## Running examples
 
 Every option file sketches against the same three real resources and refers to them by these names.

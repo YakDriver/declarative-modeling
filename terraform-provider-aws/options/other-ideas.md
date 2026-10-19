@@ -1,33 +1,6 @@
 # Other ideas
 
-Ideas raised that don't fit the representation, discovery, or test-fact options. Two are worth building regardless of which authoring form wins: a generated resource report and a re-keyed fixture directory. The rest are inference sources and parser variants, most carrying a known defect.
-
-## Generated resource report (`make resource-info`)
-
-A read-only projection that prints everything known about one resource: registration, tagging, identity, test policy, compatibility history, with the file and line each fact came from. It answers "show me everything unusual about this resource" without making any one file the authority for all of it.
-
-Intended output:
-
-```
-$ make resource-info RESOURCE=aws_ecs_service
-aws_ecs_service  (SDKResource)
-  Name        "Service"            ecs/service.go:40
-  Tags        identifierAttribute  ecs/service.go:41
-  Identity    (none)
-  existsType  ecs.Service          ecs/service_test.go:28
-```
-
-A new generator reads the resolved model and writes nothing authoritative. It only reports.
-
-Good:
-
-- No migration and no change of authority, so it is reversible.
-- It is the first consumer of whatever normalized model exists (see [intermediate-model](../../concepts/intermediate-model.md)), so it tests that architecture without committing to it.
-- The facts it cannot print are the inventory of concerns with no shared model yet: the work plan, generated rather than argued.
-
-Bad: only as complete as the model it reads from, so it needs some normalized model to exist first.
-
-A single authored surface that owns all of a resource's facts is rejected (see [ruled-out](ruled-out.md)); this report is the view that meets the same need without the central authority. It serves "discoverable per resource and per concern" (see [criteria](criteria.md)).
+Ideas raised that don't fit the representation, discovery, or test-fact options. A re-keyed fixture directory and checkable attribute references work with any authoring form, like the [generated resource report](resource-report.md). The rest are inference sources and parser variants, most carrying a known defect.
 
 ## Fixture directory keyed on filename or type name
 
