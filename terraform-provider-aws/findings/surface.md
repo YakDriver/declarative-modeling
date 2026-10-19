@@ -4,7 +4,7 @@ Counts the annotation markers in the Terraform AWS provider: how many, what job 
 
 Top line: 7,025 annotation lines across 2,670 files in 252 of 274 service packages, 25 distinct top-level markers. Counted with `rg '^//\s*@<Marker>' internal/service --type go`.
 
-By job: registration 2,679, `@Testing` 2,275, `@Tags` 1,051, identity/import 894, versioning 83, region 43. `@Testing` key counts are in [testing-keys.md](testing-keys.md), which owns them.
+By job: registration 2,679, `@Testing` 2,275, `@Tags` 1,051, identity/import 894, versioning 83, region 43. `@Testing` key counts are in [testing-keys.md](testing-keys.md).
 
 ## Every marker
 

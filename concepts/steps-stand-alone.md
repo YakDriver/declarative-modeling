@@ -1,29 +1,27 @@
 # A step has to stand alone
 
-Perfection is the enemy of good, and the usual remedy for that makes a different mess. A change that leaves a system better than it found it has done its work, whether or not it reaches the end state anyone sketched. But "this is a step in the right direction" is also how a coherent design becomes a junk drawer, one defensible addition at a time. Both failures are real and they pull opposite ways, so neither "ship progress" nor "wait for the whole answer" is the rule.
+Abandon everything planned after a change. If the system is still better off than before, the change was a step, and its size doesn't matter. If it only pays off once later work lands, it's a down payment, and the real question is whether anyone is good for the rest.
 
-The test that separates them: abandon everything planned after this change. Is the system still better off than before? Then it was a step, and its size does not matter. Does it only pay off once later work lands? Then it is a down payment, and the real question is whether anyone is good for the rest.
+That moves the judgment from direction to self-sufficiency. Direction is cheap, because almost any change points somewhere defensible to the person making it. Self-sufficiency can be checked now, before the plan either happens or doesn't.
 
-That reframes the judgment from direction to self-sufficiency. Direction is cheap, because almost any change points somewhere defensible to the person making it. Self-sufficiency is checkable, and it is checkable now rather than after the plan either happens or doesn't.
+The test cuts both ways. It rejects additions justified only by where they lead. And it accepts a small change that leaves things better, even when nobody has the whole answer yet. Holding out for the complete design usually means keeping the current mess.
 
-## Accretion is the failure of direction without self-sufficiency
+## Direction without self-sufficiency accretes
 
-Magic Modules is the clearest case. Its resource definition grew to roughly 90 fields, eleven separate `exclude_*` switches, single-use keys, and a hand-written escape hatch. Nobody added a bad field. Each one solved a real problem for somebody and pointed in a reasonable direction, and schema validation confirmed every value was well formed. What no addition had to answer was whether the whole still made sense ([magic-modules](../case-studies/magic-modules.md)).
+Magic Modules' resource definition grew to about 90 fields, eleven separate `exclude_*` switches, and single-use keys, one of them marked `TODO rewrite: 1 instance used`. Each field probably pointed somewhere reasonable when it was added, and schema validation confirmed every value was well formed. What no addition had to answer was whether the whole still made sense ([magic-modules](../case-studies/magic-modules.md)).
 
-The same shape appears in `controller-gen`, where four different ways to mark a field optional accumulated, each presumably reasonable when it arrived ([controller-gen](../case-studies/controller-gen.md)).
+`controller-gen` accumulated four different ways to mark a field optional, each presumably reasonable when it arrived ([controller-gen](../case-studies/controller-gen.md)).
 
-A down payment that nobody completes is the usual mechanism. A field is added because a migration needs it, the migration stalls, and the field becomes permanent while still looking like resource semantics.
+## Down payments nobody completes
 
-## Waiting for the whole answer is the opposite failure
+Upjet v2 has users apply the same resource configuration to two provider objects during a migration, and its docs concede "You may need to duplicate common configurations." The duplication is a down payment on finishing the migration, and until it finishes, every resource pays it ([upjet](../case-studies/upjet.md)).
 
-HashiCorp's Provider Code Specification is a sound architecture: a versioned intermediate representation separating any source of resource facts from any consumer of them. It has been tech preview for three years, with no component release in 25 months, while the providers that adopted it generate schemas and hand-write every behavior it does not cover ([tfplugingen](../case-studies/tfplugingen.md)).
-
-The design was not wrong. It was scoped to a boundary (declarative shape, not lifecycle behavior) that left the expensive half of the problem outside, and the expensive half is what adopters needed. A smaller piece that fully solved something would have compounded. The larger design is still waiting.
+HashiCorp's Provider Code Specification is a down payment at a larger scale. A versioned intermediate representation between any source of resource facts and any consumer pays off once generators cover behavior, not just schema. Three years after the tech preview, the generators produce schemas and data models, and no component has a release newer than September 2024 ([tfplugingen](../case-studies/tfplugingen.md)). The architecture isn't wrong. The part that shipped doesn't solve the expensive half of the problem on its own.
 
 ## Applying it reorders work
 
-The test changes what to do first, not just what to accept. Converting three list resources in the Terraform AWS provider to a shared implementation removed 138 lines and added 120, a net gain of about 15 with break-even near the fourth resource. By itself that does not clearly leave the provider better: it is a down payment on converting the rest.
+In the Terraform AWS provider, converting three list resources to one shared implementation came out at about break-even on lines, paying off only from the fourth resource onward ([list-resource-experiment](../terraform-provider-aws/findings/list-resource-experiment.md)). By itself that's a down payment on converting the rest.
 
-Normalizing the flatten functions those resources call does stand alone. The return contracts vary three ways across 130 functions, and making them uniform is cleanup worth having even if no shared implementation ever lands ([list-resource-experiment](../terraform-provider-aws/findings/list-resource-experiment.md)).
+Normalizing the flatten functions those resources call does stand alone. Their return contracts differ, and making them uniform is cleanup worth having even if no shared implementation ever lands (same finding).
 
-So the normalization goes first and ships on its own, and the shared implementation follows once its payoff no longer depends on work that may not happen.
+So the normalization goes first and ships on its own. The shared implementation follows once its payoff no longer depends on work that may not happen.
