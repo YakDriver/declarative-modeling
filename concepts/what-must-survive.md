@@ -15,7 +15,7 @@ The classes are easy to confuse because all four look the same from inside runni
 
 - The public resource type name is an external contract. It keys the runtime lookup and is the only source of some type names, and users depend on its exact spelling.
 - Rejecting duplicate type names at startup is an intentional invariant.
-- A resource's internal "friendly name" doubling as a filesystem path for test fixtures is incidental coupling. The same string names 685 fixture directories holding 4,063 files, so changing it moves directories, but that was never a decision anyone made.
+- A resource's internal "friendly name" doubling as a filesystem path for test fixtures is incidental coupling. The same string names 685 fixture directories holding 4,063 files ([provider contract](../terraform-provider-aws/findings/provider-contract.md)), so changing it moves directories, but that was never a decision anyone made.
 - A misspelled key that no reader consumes is a defect: `tagsTests` where the consumer looks for `tagsTest`, ignored with no warning ([silent-failures](../terraform-provider-aws/findings/silent-failures.md)).
 
 Sorting this way is itself judgment, and the hard cases are incidental couplings that look like contracts because something would break if you changed them. The test is whether anyone decided it. This is the same question that separates [divergence from configuration](divergence-is-not-configuration.md): a difference that no one chose is not a requirement.

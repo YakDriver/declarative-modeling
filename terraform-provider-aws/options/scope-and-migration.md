@@ -8,7 +8,7 @@ The surface spans registration, tags, region, identity, import, and the `@Testin
 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
-| Leave it alone | Nothing | No migration, no new concepts; the 2,679 registrations keep working | Keeps silent unknown keys ([silent-failures](../findings/silent-failures.md)), three parsers, the 54-key `@Testing` surface |
+| Leave it alone | Nothing | No migration, no new concepts; the 2,679 registrations ([registration](../findings/registration.md)) keep working | Keeps silent unknown keys ([silent-failures](../findings/silent-failures.md)), three parsers, the 54-key `@Testing` surface |
 | Tidy in place | The parser rejects unknown keys and malformed markers; syntax unchanged | Small; closes the silent-failure class; helps every later option; no retraining | Leaves density, discoverability, generator size, production/test mixing; invests in a language that may be replaced |
 | Move only test facts | `@Testing` leaves production files; registration untouched | Targets the largest surface (2,275 lines, [surface](../findings/surface.md)) | Two systems to learn; not a clean cut, because some `@Testing` keys ship in the binary or gate `make gen` ([provider-contract](../findings/provider-contract.md)) |
 | Migrate by family | One concern at a time (tags, then identity, and so on) | Incremental; each family takes the home that suits it | Coexistence machinery for the duration; retiring a family needs all its entries and consumers moved |

@@ -83,5 +83,5 @@ Shape of the curve:
 
 - Rollout was fast: 0 to 1,667 lines in roughly two months once the mechanism merged.
 - Then nearly flat for about 9 months: 2,339 (Jul 2023) to 2,549 (Apr 2024), tracking new resources rather than new kinds of metadata.
-- Then 2.75x in two and a half years: 2,549 to 7,025 since April 2024.
+- Then 2.75x in two and a half years: 2,549 to 7,025 since April 2024. The latest row matches the inventory in [surface.md](surface.md).
 - `@Testing` accounts for about half of that growth: 2,272 of the 4,476 lines added since April 2024, and 32% of the current total. The identity and compatibility families account for most of the rest.

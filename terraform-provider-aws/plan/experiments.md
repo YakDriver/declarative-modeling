@@ -36,4 +36,4 @@ Each returns with its parked piece in [the plan](plan.md).
 
 ## Cut
 
-Deriving the friendly `Name` (a wrong one silently relocates 685 fixture directories) and asking the constructed object at startup about Import, Region, and Tags presence both feed registration, so they are cut rather than parked (see [the plan](plan.md)).
+Deriving the friendly `Name` (a wrong one silently relocates 685 fixture directories, [provider-contract](../findings/provider-contract.md)) and asking the constructed object at startup about Import, Region, and Tags presence both feed registration, so they are cut rather than parked (see [the plan](plan.md)).

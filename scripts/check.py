@@ -41,6 +41,23 @@ META = [
     "it's worth noting", "let's look at",
 ]
 
+# Headline numbers and the file that owns each measurement. Any other file
+# that states one must link the owner. Index READMEs may quote freely.
+OWNED = {
+    "7,025": "surface.md",
+    "2,275": "surface.md",
+    "2,679": "registration.md",
+    "84.4%": "registration.md",
+    "51.2%": "testing-keys.md",
+    "20.5%": "testing-keys.md",
+    "54 distinct keys": "testing-keys.md",
+    "54 keys": "testing-keys.md",
+    "994,564": "generated-tests.md",
+    "3,063": "generators.md",
+    "685 fixture": "provider-contract.md",
+    "2.75x": "history.md",
+}
+
 SHORTHAND = [
     (r"§\s*\d", "section sign with a number"),
     (r"\bQ-?\d+\b", "Q-number"),
@@ -168,6 +185,15 @@ def check_dirs_have_readme():
             problem(rel(d), None, "directory has markdown files but no README.md index")
 
 
+def check_owned(path, text):
+    """A file that states an owned number must link the file that owns it."""
+    if path.name in ("README.md", "AGENTS.md"):
+        return
+    for number, owner in OWNED.items():
+        if number in text and path.name != owner and f"{owner})" not in text:
+            problem(rel(path), None, f"states {number!r} without linking its owner {owner}")
+
+
 def check_case_studies():
     d = ROOT / "case-studies"
     if not d.exists():
@@ -229,6 +255,7 @@ def main():
         check_heading(path, lines)
         check_prose(path, lines)
         check_links(path, lines)
+        check_owned(path, text)
     check_indexes()
     check_dirs_have_readme()
     check_case_studies()

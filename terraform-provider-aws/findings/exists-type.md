@@ -44,7 +44,7 @@ var v timestreaminfluxdb.GetDbInstanceOutput
 testAccCheckDBInstanceExists(ctx, t, resourceName, &v),
 ```
 
-A derived type that disagrees with the helper's parameter fails to compile, in generated code in the same package. This sets `existsType` apart from `Name`, where a wrong derivation silently relocates 685 fixture directories, and from `TypeName`, where it is a silent breaking change to a public API (see [silent-failures.md](silent-failures.md)).
+A derived type that disagrees with the helper's parameter fails to compile, in generated code in the same package. This sets `existsType` apart from `Name`, where a wrong derivation silently relocates 685 fixture directories ([provider-contract.md](provider-contract.md)), and from `TypeName`, where it is a silent breaking change to a public API (see [silent-failures.md](silent-failures.md)).
 
 ## Cases no rule resolves
 

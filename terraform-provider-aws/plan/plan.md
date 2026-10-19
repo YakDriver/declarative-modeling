@@ -45,7 +45,7 @@ Each returns when its condition holds.
 
 ## Cut
 
-- **Derive the friendly `Name` for all entries** and **ask the constructed object at startup** about Import, Region, and Tags presence. Both feed registration, which is parked, so neither is worth running now. A wrong `Name` would silently relocate 685 fixture directories ([silent-failures](../findings/silent-failures.md)), which is also why its derivation is not a safe standalone piece.
+- **Derive the friendly `Name` for all entries** and **ask the constructed object at startup** about Import, Region, and Tags presence. Both feed registration, which is parked, so neither is worth running now. A wrong `Name` would silently relocate 685 fixture directories ([provider-contract](../findings/provider-contract.md)), which is also why its derivation is not a safe standalone piece.
 
 ## Open decisions
 

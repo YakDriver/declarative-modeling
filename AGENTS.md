@@ -102,7 +102,7 @@ If a file is over, cut first. Split only when the parts make sense on their own.
 
 ## Before finishing
 
-Run `python3 scripts/check.py`. It enforces the mechanical rules above: size, em dashes, filler words, meta narration, private shorthand, kebab-case names, local links, directory indexes, and case-study sections. CI runs the same script, and `--external` additionally checks every outbound link.
+Run `python3 scripts/check.py`. It enforces the mechanical rules above: size, em dashes, filler words, meta narration, private shorthand, kebab-case names, local links, owned numbers, directory indexes, and case-study sections. CI runs the same script, and `--external` additionally checks every outbound link.
 
 The script cannot check these, so check them yourself:
 

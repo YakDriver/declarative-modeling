@@ -4,7 +4,7 @@ Inventory of the keyword-argument keys on `@Testing` annotations in terraform-pr
 
 ## Inventory
 
-As of 2026-10-01: 2,275 `@Testing` lines, **54** distinct keys in use, **113** lines carrying more than one key. Counts are key occurrences.
+As of 2026-10-01: 2,275 `@Testing` lines ([surface.md](surface.md)), **54** distinct keys in use, **113** lines carrying more than one key. Counts are key occurrences.
 
 | Count | Key | | Count | Key |
 |---:|---|---|---:|---|
