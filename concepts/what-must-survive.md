@@ -1,3 +1,5 @@
+# What must survive a redesign
+
 Not everything a system does today is a requirement, so before redesigning it, sort current behavior into four classes and keep only the two that bind.
 
 A working system behaves the way it does for different reasons, and those reasons are not equally binding on a replacement. Four classes separate them:

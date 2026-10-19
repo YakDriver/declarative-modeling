@@ -23,12 +23,14 @@ case-studies/                     one file per system or approach (magic-modules
 concepts/                         one idea per file that applies to any system (authority.md)
 terraform-provider-aws/findings/  dated measurements of the provider, one topic per file
 terraform-provider-aws/options/   the provider's design options, and the ones ruled out
-plan/                             what's decided for the provider and what happens next
+terraform-provider-aws/plan/      what's decided for the provider and what happens next
 ```
 
 Add a directory when there's content for it, not before. Use kebab-case filenames.
 
-Some content is general and some is about one project. A **concept** should make sense to someone who has never heard of the Terraform AWS provider. Anything that only makes sense for the provider goes under `terraform-provider-aws/` or `plan/`.
+Every directory has a `README.md` that indexes its files: one line per file, giving the most important idea in it, not a description of what it covers. Update the index in the same change that adds, removes, or substantially changes a file.
+
+Some content is general and some is about one project. A **concept** should make sense to someone who has never heard of the Terraform AWS provider. Anything specific to the provider, including its plan, goes under `terraform-provider-aws/`.
 
 ## Case studies
 
