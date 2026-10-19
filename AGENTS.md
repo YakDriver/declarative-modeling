@@ -70,6 +70,7 @@ This repository is public.
 - Prefer primary sources (code, official docs, issue threads) over write-ups about them.
 - Quote exactly or not at all. Never invent an example, number, quotation, or anecdote.
 - Numbers go stale. Give each one a date or a commit.
+- One file owns a number; everywhere else links to it instead of restating it. Two dated measurements of the same thing are both right and read as a contradiction.
 - Mark judgment as judgment ("I think", "probably"). Don't present an opinion as a finding, or a finding as a hedge.
 - Describe what a design was built to solve before saying where it falls short. Criticize designs, not the people who built them.
 
@@ -103,7 +104,10 @@ Check with `wc -w <file>`. If a file is over, cut first. Split only when the par
 
 ## Before finishing
 
-- `wc -w` is under the limit.
-- No em dashes: `grep -n '—' <file>` returns nothing.
+Run `python3 scripts/check.py`. It enforces the mechanical rules above: size, em dashes, filler words, meta narration, private shorthand, kebab-case names, local links, directory indexes, and case-study sections. CI runs the same script, and `--external` additionally checks every outbound link.
+
+The script cannot check these, so check them yourself:
+
 - Every claim has a source or a dated measurement.
 - The first two lines would tell a skimmer whether to keep reading.
+- The file earns its place, has one obvious home, and says nothing another file already says.
