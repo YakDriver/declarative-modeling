@@ -64,4 +64,4 @@ For a non-aliased, conventionally shaped resource whose kind can be identified r
 
 - [findings/](findings/) measurements of the current surface: size, growth, keys, derivability, silent failures, the runtime contract.
 - [options/](options/) the design options under consideration and the ones ruled out.
-- [../plan/](../plan/) what is decided and what happens next.
+- [plan/](plan/plan.md) what is decided and what happens next.
