@@ -33,13 +33,12 @@ Get them right, and most facts never need writing at all. Crossplane's Upjet der
 
 New to this? Read in this order, about 20 minutes:
 
-1. The [case studies index](case-studies/README.md), for who does what and the one-line lesson from each.
-2. [controller-gen](case-studies/controller-gen.md) and [Upjet](case-studies/upjet.md): silent comment markers on one side, a derive-first design in typed Go on the other.
-3. [Derive before authoring](concepts/derive-before-authoring.md) and [spec or metadata](concepts/spec-or-metadata.md), the two ideas that do the most work.
+1. [Software KonMari](konmari.md), the ethos: keep what serves, give it one home, retire the rest.
+2. The [case studies index](case-studies/README.md), for who does what and the one-line lesson from each.
+3. [controller-gen](case-studies/controller-gen.md) and [Upjet](case-studies/upjet.md): silent comment markers on one side, a derive-first design in typed Go on the other.
+4. [Derive before authoring](concepts/derive-before-authoring.md) and [spec or metadata](concepts/spec-or-metadata.md), the two ideas that do the most work.
 
 ## Contents
-
-**Ethos: [Software KonMari](konmari.md).** Keep what serves, give it one home, retire the rest without contempt, and never let the perfect answer block a good step.
 
 - [Case studies](case-studies/README.md): thirteen systems, from Google's Terraform providers to Kubernetes controllers, and what each one teaches.
 - [Concepts](concepts/README.md): ideas that hold across systems, like deriving facts before authoring them.
