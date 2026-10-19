@@ -32,7 +32,7 @@ Done when: the checker runs across the tree and its output is recorded. Turning 
 
 ## Kept
 
-- **Classify the 121 services that have `@Tags` but do not run `tagstests`** (deliberate, omitted, or missing fixtures). Needed by piece 5: the liveness checker must not report a service as inert when it only lacks fixtures ([testing-keys](../findings/testing-keys.md)).
+- **Classify the services that have `@Tags` but do not run `tagstests`** (deliberate, omitted, or missing fixtures). Count them as part of the work, since the figure drifts. Needed by piece 5: the liveness checker must not report a service as inert when it only lacks fixtures ([testing-keys](../findings/testing-keys.md)).
 
 ## Parked
 

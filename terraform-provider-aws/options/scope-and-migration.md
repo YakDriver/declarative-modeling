@@ -4,7 +4,7 @@ How much of the annotation surface to change, in what unit, and how to get there
 
 ## How much to change
 
-The surface is 7,025 lines across registration, tags, region, identity, import, and 54 `@Testing` keys ([surface](../findings/surface.md)). The range runs from touching nothing to rewriting every resource at once.
+The surface spans registration, tags, region, identity, import, and the `@Testing` keys ([surface](../findings/surface.md)). The range runs from touching nothing to rewriting every resource at once.
 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
