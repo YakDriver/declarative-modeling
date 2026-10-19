@@ -4,13 +4,13 @@ How much of the annotation surface to change, in what unit, and how to get there
 
 ## How much to change
 
-The surface is 7,025 lines across registration, tags, region, identity, import, and 54 `@Testing` keys ([surface](../findings/surface.md)). The range runs from touching nothing to rewriting every resource at once.
+The surface spans registration, tags, region, identity, import, and the `@Testing` keys ([surface](../findings/surface.md)). The range runs from touching nothing to rewriting every resource at once.
 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
-| Leave it alone | Nothing | No migration, no new concepts; the 2,679 registrations keep working | Keeps silent unknown keys ([silent-failures](../findings/silent-failures.md)), three parsers, the 54-key `@Testing` surface |
+| Leave it alone | Nothing | No migration, no new concepts; the 2,679 registrations ([registration](../findings/registration.md)) keep working | Keeps silent unknown keys ([silent-failures](../findings/silent-failures.md)), three parsers, the 54-key `@Testing` surface |
 | Tidy in place | The parser rejects unknown keys and malformed markers; syntax unchanged | Small; closes the silent-failure class; helps every later option; no retraining | Leaves density, discoverability, generator size, production/test mixing; invests in a language that may be replaced |
-| Move only test facts | `@Testing` leaves production files; registration untouched | Targets the largest surface (2,275 lines) | Two systems to learn; not a clean cut, because some `@Testing` keys ship in the binary or gate `make gen` ([provider-contract](../findings/provider-contract.md)) |
+| Move only test facts | `@Testing` leaves production files; registration untouched | Targets the largest surface (2,275 lines, [surface](../findings/surface.md)) | Two systems to learn; not a clean cut, because some `@Testing` keys ship in the binary or gate `make gen` ([provider-contract](../findings/provider-contract.md)) |
 | Migrate by family | One concern at a time (tags, then identity, and so on) | Incremental; each family takes the home that suits it | Coexistence machinery for the duration; retiring a family needs all its entries and consumers moved |
 | Replace wholesale | Every resource, every consumer at once | One system, one vocabulary | 2,670 files in one change; no fallback |
 | Split by plugin framework | Framework resources use their `Metadata` method and interfaces; SDKv2 keeps (frozen) annotations | New resources are Framework, so SDKv2 only shrinks | Two mechanisms at once; generators still need Framework names at generate time. Gated on the uniformity judgment in [criteria](criteria.md) |
@@ -31,7 +31,7 @@ If change happens, what moves together. The unit is independent of the represent
 Two things cut across the choice:
 
 - Family order isn't forced by dependency. If a family binds to a still-annotated resource by (kind, type name), a simple family can migrate while registration stays in comments.
-- Retirement is a separate, expensive gate. Removing a family's reader needs every entry and consumer moved: registration 2,679, `@Tags` 1,051, `@Testing` 2,275 lines. Gating one family on retiring another means finishing one of those first.
+- Retirement is a separate, expensive gate. Removing a family's reader needs every entry and consumer moved: registration 2,679, `@Tags` 1,051, `@Testing` 2,275 lines ([surface](../findings/surface.md)). Gating one family on retiring another means finishing one of those first.
 
 ### Candidate slices
 

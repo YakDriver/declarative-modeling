@@ -16,7 +16,7 @@ The cost structure makes it worse. When adding a key meant a person deciding to 
 
 [controller-gen](../case-studies/controller-gen.md), which reads `// +kubebuilder:` comment markers on Kubernetes Go structs, shows the same drift at the vocabulary level. It offers four separate ways to mark a field optional. The author who ran it in production calls this "simply far too many different ways to achieve something." Four spellings for one concept is the signature of a vocabulary that grew by accretion rather than design, and it teaches users to guess.
 
-The [`@Testing` annotation keys in terraform-provider-aws](../terraform-provider-aws/findings/testing-keys.md) are the same pattern in comment form. An inventory found 54 distinct keys across 2,275 annotation lines, with 13 of those keys used exactly once. Nobody set out to build a 53-key testing vocabulary in production resource comments. Each key made sense when added, and the surface rewarded extension over restructuring. That is the feedback loop, and nothing in the format resists it.
+The [`@Testing` annotation keys in terraform-provider-aws](../terraform-provider-aws/findings/testing-keys.md) are the same pattern in comment form. An inventory found 54 distinct keys, with 13 of those keys used exactly once. Nobody set out to build a 54-key testing vocabulary in production resource comments. Each key made sense when added, and the surface rewarded extension over restructuring. That is the feedback loop, and nothing in the format resists it.
 
 ## The same hazard survives a type system
 

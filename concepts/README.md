@@ -10,4 +10,5 @@ Ideas that apply to any system that models resources declaratively.
 - [The intermediate model is not the authority](intermediate-model.md): a normalized model reports facts owned elsewhere, and it earns its keep only with several sources or consumers.
 - [Declaration placement](declaration-placement.md): put a declaration next to the symbols it names, not with others of its kind.
 - [Spec or metadata](spec-or-metadata.md): either the declaration is the source of truth or the code is, and mixing the two for one fact is the defect.
+- [A step has to stand alone](steps-stand-alone.md): a change that only pays off once later work lands is a down payment, not a step.
 - [Philosophies](philosophies.md): five stances on where resource facts live, each with a system that runs it and a cost.

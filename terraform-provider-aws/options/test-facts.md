@@ -1,12 +1,12 @@
 # Where test facts live
 
-`@Testing` carries 2,275 lines across 54 keys, produces none of its own output, and sits in production files ([testing-keys](../findings/testing-keys.md)). Three questions decide where it could go instead: where per-resource facts live, who switches generation on, and where test-only data lives. All three share one constraint: the test generators still have to be fed, and some keys fail `make gen` while appearing in no generated file ([provider-contract](../findings/provider-contract.md)).
+`@Testing` is the largest keyword-argument family, produces none of its own output, and sits in production files ([testing-keys](../findings/testing-keys.md)). Three questions decide where it could go instead: where per-resource facts live, who switches generation on, and where test-only data lives. All three share one constraint: the test generators still have to be fed, and some keys fail `make gen` while appearing in no generated file ([provider-contract](../findings/provider-contract.md)).
 
 The running example throughout is the structured resource (timestreaminfluxdb DB instance).
 
 ## Per-resource test facts
 
-The facts are `existsType`, `importIgnore`, `importStateIdFunc`, `preCheck`, `serialize`, `generator`, and the rest of the 54 keys. Scenario counts are set by templates and are out of scope.
+The facts are `existsType`, `importIgnore`, `importStateIdFunc`, `preCheck`, `serialize`, `generator`, and the rest of the 54 keys ([testing-keys](../findings/testing-keys.md)). Scenario counts are set by templates and are out of scope.
 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
@@ -42,8 +42,8 @@ Two switches exist today and neither validates the other: 437 `@Tags` files sit 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
 | Both switches, unvalidated (today) | Nothing | No change | `@Tags` implies tag tests in some services and not others; inert opt-outs |
-| Both switches, cross-checked | A check fails on contradiction | Keeps both switches; contradictions become errors that name the line, satisfying [fails early, locally, and never inertly](criteria.md) | Two places to edit; needs a decision for each of the 121 non-invoking services |
-| Per-resource switch only | Every service runs the generators; annotations decide | One switch, beside the resource | 121 services would generate tests where `testdata/tmpl/*_basic.gtpl` fixtures don't exist; needs explicit opt-outs first |
+| Both switches, cross-checked | A check fails on contradiction | Keeps both switches; contradictions become errors that name the line, satisfying [fails early, locally, and never inertly](criteria.md) | Two places to edit; needs a decision for each service that does not invoke the generator ([generated-tests](../findings/generated-tests.md)) |
+| Per-resource switch only | Every service runs the generators; annotations decide | One switch, beside the resource | The services that skip `tagstests` today would generate tests where `testdata/tmpl/*_basic.gtpl` fixtures don't exist; needs explicit opt-outs first |
 | Per-service switch only | `@Tags` never implies tests; a service setting does | One switch | Per-resource exceptions still need a home |
 | Service-level data holds the switch | A service data file carries it | Visible as data, not a `go:generate` line | **Parked** (per-service data file); depends on that file existing |
 

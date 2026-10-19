@@ -28,7 +28,7 @@ terraform-provider-aws/plan/      what's decided for the provider and what happe
 
 Add a directory when there's content for it, not before. Use kebab-case filenames.
 
-Every directory has a `README.md` that indexes its files: one line per file, giving the most important idea in it, not a description of what it covers. Update the index in the same change that adds, removes, or substantially changes a file.
+Every directory has a `README.md` that indexes its files: one line per file, giving the most important idea in it, not a description of what it covers. An index line may quote its file's headline number. Update the index in the same change that adds, removes, or substantially changes a file.
 
 Some content is general and some is about one project. A **concept** should make sense to someone who has never heard of the Terraform AWS provider. Anything specific to the provider, including its plan, goes under `terraform-provider-aws/`.
 
@@ -36,7 +36,7 @@ Some content is general and some is about one project. A **concept** should make
 
 A case study covers one system. Use these sections, in this order, and leave out any that would be empty:
 
-- **Summary**: one or two sentences. Who runs it and at what scale (Google's Terraform providers, thousands of Kubernetes controllers), then the single most useful thing to know about it. Readers decide whether to care based on who's doing it.
+- **Summary**: one or two sentences. Who runs it and at what scale (Google's Terraform providers, thousands of Kubernetes controllers), then the single most useful thing to know about it.
 - **How it works**: where resource facts are authored (external file, IDL, comment markers, host-language values) and what consumes them (a generator, a shared runtime, both). A short real snippet if it helps.
 - **What works**
 - **What doesn't**
@@ -70,6 +70,7 @@ This repository is public.
 - Prefer primary sources (code, official docs, issue threads) over write-ups about them.
 - Quote exactly or not at all. Never invent an example, number, quotation, or anecdote.
 - Numbers go stale. Give each one a date or a commit.
+- One file owns each measurement. Anywhere else, cite the owner's number with a link to the owner, or leave it out. Never measure the same thing again in another file: two dated measurements of one thing are both right and read as a contradiction. When an owner's number changes, change its citations in the same commit.
 - Mark judgment as judgment ("I think", "probably"). Don't present an opinion as a finding, or a finding as a hedge.
 - Describe what a design was built to solve before saying where it falls short. Criticize designs, not the people who built them.
 
@@ -94,16 +95,17 @@ Write for a technical reader who is busy and skeptical. They will skim first and
 
 ## Size
 
-Short files get read.
-
 - Case study: 800 words or fewer.
 - Any other file: 1,200 words or fewer.
 
-Check with `wc -w <file>`. If a file is over, cut first. Split only when the parts make sense on their own.
+If a file is over, cut first. Split only when the parts make sense on their own.
 
 ## Before finishing
 
-- `wc -w` is under the limit.
-- No em dashes: `grep -n '—' <file>` returns nothing.
+Run `python3 scripts/check.py`. It enforces the mechanical rules above: size, em dashes, filler words, meta narration, private shorthand, kebab-case names, local links, owned numbers, directory indexes, and case-study sections. CI runs the same script, and `--external` additionally checks every outbound link.
+
+The script cannot check these, so check them yourself:
+
 - Every claim has a source or a dated measurement.
 - The first two lines would tell a skimmer whether to keep reading.
+- The file earns its place, has one obvious home, and says nothing another file already says.

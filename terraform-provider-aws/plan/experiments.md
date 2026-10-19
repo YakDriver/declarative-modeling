@@ -14,9 +14,9 @@ Question: does replacing the string-named type with a type argument work beyond 
 Method: piece 4 on comprehend's two resources; a wrong type is a compile error, so compiling verifies it.
 What would change: if it generalizes, the largest single key can be removed; if not, the recoverable share of the surface drops sharply. Derivation routes already measured: the hand-written Exists helper resolves about 98%, file-local finders about 74% ([exists-type](../findings/exists-type.md)).
 
-**Why do 121 services skip `tagstests`?**
+**Why do services with `@Tags` skip `tagstests`?**
 Question: deliberate, omission, or missing fixtures?
-Method: walk each service's `generate.go` and `testdata/` templates; a sample of 30 suffices if the full set runs long.
+Method: count the services, then walk each one's `generate.go` and `testdata/` templates; a sample of 30 suffices if the full set runs long.
 What would change: the liveness checker (piece 5) must treat a fixture-less service differently from an inert key, and the answer decides whether a per-service or per-resource test switch is the right shape ([testing-keys](../findings/testing-keys.md)).
 
 **What does a full report-only scan find?**
@@ -36,4 +36,4 @@ Each returns with its parked piece in [the plan](plan.md).
 
 ## Cut
 
-Deriving the friendly `Name` (a wrong one silently relocates 685 fixture directories) and asking the constructed object at startup about Import, Region, and Tags presence both feed registration, so they are cut rather than parked (see [the plan](plan.md)).
+Deriving the friendly `Name` (a wrong one silently relocates 685 fixture directories, [provider-contract](../findings/provider-contract.md)) and asking the constructed object at startup about Import, Region, and Tags presence both feed registration, so they are cut rather than parked (see [the plan](plan.md)).

@@ -1,6 +1,6 @@
 # The problem with the provider's annotations
 
-The Terraform AWS provider registers every resource and configures its tests with comment annotations: one marker per resource, plus keyword arguments for tags, region, identity, import, and test generation. That surface has grown to 7,025 lines, it accepts plainly wrong keys without a word, and the write cost the design was meant to save is no longer the cost that matters.
+The Terraform AWS provider registers every resource and configures its tests with comment annotations: one marker per resource, plus keyword arguments for tags, region, identity, import, and test generation. That surface has grown to 7,025 lines ([inventory](findings/surface.md)), it accepts plainly wrong keys without a word, and the write cost the design was meant to save is no longer the cost that matters.
 
 ## What an annotation is
 
@@ -34,12 +34,12 @@ Review and density come apart for a typed literal. `Factory:`, `TypeName:`, and 
 
 ## Which job is the problem
 
-The markers do four different jobs with different ages and growth:
+The markers do four different jobs with different ages and growth (line counts as of 2026-10-01, from [findings/surface.md](findings/surface.md)):
 
 - **Registration** (2,679 lines) is the original bare-marker design and grows with the resource count.
 - **Tags and region** feed registration fields and trigger generated tag tests.
 - **Identity and import** (894 lines) arrived in 2025 and expand into thousands of nested generated lines.
-- **Test generation** (`@Testing`, 2,275 lines, 54 keys) carries most of the recent growth and most of the keyword-argument language, yet produces none of its own output. It configures the other generators.
+- **Test generation** (`@Testing`, 2,275 lines) carries most of the recent growth and most of the keyword-argument language, yet produces none of its own output. It configures the other generators.
 
 Registration is the simplest syntax; `@Testing` and identity are where the complexity sits. Of the `@Testing` keyword occurrences, 51.2% are history, switches, environment, or execution policy, which a running program cannot supply ([findings/testing-keys.md](findings/testing-keys.md)). The single largest key, `existsType`, names a Go type the type system already holds ([findings/exists-type.md](findings/exists-type.md)). Deciding which job to change first is an open question, because the jobs have different problems. See [../concepts/derive-before-authoring.md](../concepts/derive-before-authoring.md).
 

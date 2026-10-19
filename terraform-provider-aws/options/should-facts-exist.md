@@ -19,6 +19,8 @@ None of these is ruled out or parked. They combine per fact: one fact can be der
 
 ## Which facts each move could reach
 
+Volumes are from [registration](../findings/registration.md) and [testing-keys](../findings/testing-keys.md).
+
 | Fact | Volume | A possible source |
 |---|---:|---|
 | `Name` (friendly) | 2,679 | Inferred ~91% from the factory name; misses are judgment names ("Hosted Zone", "Route Table") |
@@ -35,7 +37,7 @@ Role decides which move applies. A switch like `tagsTest` can be derived; a hist
 
 ## Why "fails early" sorts the derivations
 
-A derivation is only safe when a wrong result fails loud (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)). `existsType` clears that bar: a bad type is a compile error in the same package. `Name` does not, because a wrong derivation silently relocates 685 fixture directories. `TypeName` does not either, because a wrong value silently changes a public contract ([silent-failures](../findings/silent-failures.md)). The "Fails early, locally, and never inertly" criterion is what separates a derivation worth running from one that only hides the mistake.
+A derivation is only safe when a wrong result fails loud (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)). `existsType` clears that bar: a bad type is a compile error in the same package. `Name` does not, because a wrong derivation silently relocates 685 fixture directories ([provider-contract](../findings/provider-contract.md)). `TypeName` does not either, because a wrong value silently changes a public contract ([silent-failures](../findings/silent-failures.md)). The "Fails early, locally, and never inertly" criterion is what separates a derivation worth running from one that only hides the mistake.
 
 ## `existsType`, the clearest case
 
