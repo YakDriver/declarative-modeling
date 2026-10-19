@@ -70,7 +70,7 @@ This repository is public.
 - Prefer primary sources (code, official docs, issue threads) over write-ups about them.
 - Quote exactly or not at all. Never invent an example, number, quotation, or anecdote.
 - Numbers go stale. Give each one a date or a commit.
-- One file owns a number; everywhere else links to it instead of restating it. Two dated measurements of the same thing are both right and read as a contradiction.
+- One file owns each measurement. Anywhere else, cite the owner's number with a link to the owner, or leave it out. Never measure the same thing again in another file: two dated measurements of one thing are both right and read as a contradiction. When an owner's number changes, change its citations in the same commit.
 - Mark judgment as judgment ("I think", "probably"). Don't present an opinion as a finding, or a finding as a hedge.
 - Describe what a design was built to solve before saying where it falls short. Criticize designs, not the people who built them.
 

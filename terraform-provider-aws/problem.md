@@ -1,6 +1,6 @@
 # The problem with the provider's annotations
 
-The Terraform AWS provider registers every resource and configures its tests with comment annotations: one marker per resource, plus keyword arguments for tags, region, identity, import, and test generation. That surface has grown to 7,025 lines, it accepts plainly wrong keys without a word, and the write cost the design was meant to save is no longer the cost that matters.
+The Terraform AWS provider registers every resource and configures its tests with comment annotations: one marker per resource, plus keyword arguments for tags, region, identity, import, and test generation. That surface has grown to 7,025 lines ([inventory](findings/surface.md)), it accepts plainly wrong keys without a word, and the write cost the design was meant to save is no longer the cost that matters.
 
 ## What an annotation is
 

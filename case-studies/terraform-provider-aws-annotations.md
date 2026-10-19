@@ -18,7 +18,7 @@ func newDBInstanceResource(_ context.Context) (resource.ResourceWithConfigure, e
 
 Three generators each run their own AST walk over the same comments: `servicepackage` (registration, tags, identity), `tagstests`, and `identitytests`. `servicepackage` emits a registration struct (`Factory`, `TypeName`, `Name`, `Region`, `Tags`, `Identity`, `Import`) into the service's `service_package_gen.go`. At startup the provider reads those fields to wire interceptors, importers, and identity. For Framework resources the wrapper's `Metadata` returns the registered `TypeName` and never calls the inner resource, so registration is the only source of a Framework type name.
 
-On 2026-10-16 (commit `8530aab094b`) the surface was 7,134 marker lines in 2,687 files, 25 marker kinds, not counting tests or generated files.
+The surface is 7,025 marker lines in 2,670 files, 25 marker kinds, not counting tests or generated files ([inventory](../terraform-provider-aws/findings/surface.md), 2026-10-01).
 
 ## What works
 
@@ -32,9 +32,9 @@ The markers solved concrete problems, documented in issue [#26626](https://githu
 
 The marker is a string the compiler never sees, so mistakes are silent. `elasticache/reserved_cache_node.go:37` reads `@Testing(tagsTests=false)`; the key is `tagsTest`, so nothing reads it. It has been wrong since 2023 and is still present (verified 2026-10-16). Unknown keys and lines that miss the marker regex are both dropped without warning.
 
-Strings restate what Go already holds. `@Testing(existsType=...)` writes the resource's Go type as a string 502 times (2026-10-16), the single largest key, duplicating the type a finder already returns.
+Strings restate what Go already holds. `@Testing(existsType=...)` writes the resource's Go type as a string 492 times, the single largest key ([`@Testing` keys](../terraform-provider-aws/findings/testing-keys.md)), duplicating the type a finder already returns.
 
-Vocabulary sprawls, and the format does not stop it. `@Testing` carries 53 keys, 13 used exactly once (2026-10-16). The surface grew 2.75x between April 2024 and October 2026, about half of it `@Testing` ([#50242](https://github.com/hashicorp/terraform-provider-aws/issues/50242)). One comment language now does four jobs with different lifetimes: four `@Testing` keys cross into the production generator path, and two test-only keys sit on production markers. None of the 3,063 parsing lines has a test (#50242).
+Vocabulary sprawls, and the format does not stop it. `@Testing` carries 54 keys, 13 used exactly once ([`@Testing` keys](../terraform-provider-aws/findings/testing-keys.md)). The surface grew 2.75x between April 2024 and October 2026, about half of it `@Testing` ([history](../terraform-provider-aws/findings/history.md)). One comment language now does four jobs with different lifetimes: four `@Testing` keys cross into the production generator path, and two test-only keys sit on production markers ([silent failures](../terraform-provider-aws/findings/silent-failures.md)). None of the 3,063 parsing lines has a test ([generators](../terraform-provider-aws/findings/generators.md)).
 
 The merged [principles doc](https://github.com/hashicorp/terraform-provider-aws/blob/main/docs/design-decisions/declarative-resource-modeling-principles.md) names the fixes: prefer typed Go whose references the compiler checks, bind behavior rather than encode it as strings, and make a new field pay rent before it is added.
 
@@ -53,4 +53,4 @@ An experiment run 2026-10-08 (not yet published) tested the alternative on list 
 - [terraform-provider-aws issue #50242](https://github.com/hashicorp/terraform-provider-aws/issues/50242), read 2026-10-16
 - [terraform-provider-aws PR #28933](https://github.com/hashicorp/terraform-provider-aws/pull/28933), read 2026-10-16
 - [declarative-resource-modeling-principles.md](https://github.com/hashicorp/terraform-provider-aws/blob/main/docs/design-decisions/declarative-resource-modeling-principles.md), read 2026-10-16
-- terraform-provider-aws `main` at `8530aab094b`, measured 2026-10-16 with `git grep -E '^//[[:space:]]*@[A-Za-z0-9]+'` over `internal/service/*.go`, excluding `*_test.go` and `*_gen.go`
+- [Provider findings](../terraform-provider-aws/findings/README.md), measured 2026-10-01 to 2026-10-08 on the provider's `main` branch

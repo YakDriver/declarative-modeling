@@ -6,7 +6,7 @@ The running example throughout is the structured resource (timestreaminfluxdb DB
 
 ## Per-resource test facts
 
-The facts are `existsType`, `importIgnore`, `importStateIdFunc`, `preCheck`, `serialize`, `generator`, and the rest of the 54 keys. Scenario counts are set by templates and are out of scope.
+The facts are `existsType`, `importIgnore`, `importStateIdFunc`, `preCheck`, `serialize`, `generator`, and the rest of the 54 keys ([testing-keys](../findings/testing-keys.md)). Scenario counts are set by templates and are out of scope.
 
 | Option | What changes | Good | Bad |
 |---|---|---|---|
