@@ -1,0 +1,23 @@
+name: links
+
+# External links are checked on a schedule, not on every pull request, so a
+# transient outage upstream never blocks a change here.
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  external:
+    name: external links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check external links
+        run: python3 scripts/check.py --external
