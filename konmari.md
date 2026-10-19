@@ -14,6 +14,10 @@ The first question does most of the work. When something is hard to organize, th
 
 Tidying isn't the same as minimizing, though. Fewer lines don't mean less to understand. A 150-line implementation with boring control flow can be easier to live with than a 40-line generic one that needs a framework in your head to read. What matters is the burden on the reader, not the amount of material.
 
+Perfection is the opposite trap. Three questions that can reject things will reject nearly anything, because little fully earns its place on a first pass. A change that leaves the system better than it found it has done its work, whether or not it arrives at the end state someone sketched. Holding out for the complete answer usually means keeping the current mess, and the mess was never the better option.
+
+What keeps that from becoming an excuse is asking whether a step stands on its own. "This is progress toward something good" is how the AWS provider's testing vocabulary grew: every key was progress, and nobody was wrong about that. A step that only pays off if the rest of the plan lands is not a step, it is a down payment. A step that leaves things better even if everything after it is abandoned is worth taking now, at whatever size it comes in.
+
 The part of her method I like most is thanking things before letting them go. Old code was usually right for its time. Annotations in the AWS provider came out of an effort to get away from a central registration file that caused merge conflicts, and most keys added since then solved a real problem for somebody. No single decision was the mistake. The accumulation was, and nobody chose that. It's easier to retire a design when you understand what it was for, and easier for the people who built it to agree to it.
 
 So: keep what serves, give it one home, and let the rest go without contempt for whoever put it there.
