@@ -28,7 +28,7 @@ terraform-provider-aws/plan/      what's decided for the provider and what happe
 
 Add a directory when there's content for it, not before. Use kebab-case filenames.
 
-Every directory has a `README.md` that indexes its files: one line per file, giving the most important idea in it, not a description of what it covers. Update the index in the same change that adds, removes, or substantially changes a file.
+Every directory has a `README.md` that indexes its files: one line per file, giving the most important idea in it, not a description of what it covers. An index line may quote its file's headline number. Update the index in the same change that adds, removes, or substantially changes a file.
 
 Some content is general and some is about one project. A **concept** should make sense to someone who has never heard of the Terraform AWS provider. Anything specific to the provider, including its plan, goes under `terraform-provider-aws/`.
 
@@ -36,7 +36,7 @@ Some content is general and some is about one project. A **concept** should make
 
 A case study covers one system. Use these sections, in this order, and leave out any that would be empty:
 
-- **Summary**: one or two sentences. Who runs it and at what scale (Google's Terraform providers, thousands of Kubernetes controllers), then the single most useful thing to know about it. Readers decide whether to care based on who's doing it.
+- **Summary**: one or two sentences. Who runs it and at what scale (Google's Terraform providers, thousands of Kubernetes controllers), then the single most useful thing to know about it.
 - **How it works**: where resource facts are authored (external file, IDL, comment markers, host-language values) and what consumes them (a generator, a shared runtime, both). A short real snippet if it helps.
 - **What works**
 - **What doesn't**
@@ -95,12 +95,10 @@ Write for a technical reader who is busy and skeptical. They will skim first and
 
 ## Size
 
-Short files get read.
-
 - Case study: 800 words or fewer.
 - Any other file: 1,200 words or fewer.
 
-Check with `wc -w <file>`. If a file is over, cut first. Split only when the parts make sense on their own.
+If a file is over, cut first. Split only when the parts make sense on their own.
 
 ## Before finishing
 
