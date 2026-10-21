@@ -11,5 +11,5 @@ Measurements of the Terraform AWS provider's annotations, mostly from October 20
 - [Provider contract](provider-contract.md): what the running provider reads from each registration, and registration is the only source of a Framework resource's type name.
 - [History](history.md): annotations grew 2.75x since April 2024, and about half of that growth is `@Testing`.
 - [Generated tests](generated-tests.md): 994,564 generated test lines, 52% of counted apply steps, with the volume set by templates.
-- [List resource experiment](list-resource-experiment.md): typed declarations driving a shared implementation worked, and the real cost was normalizing flatten functions.
+- [List resource experiment](list-resource-experiment.md): typed declarations driving one shared implementation are shorter from the third resource, and the flatten signature is the main obstacle.
 - [File organization](file-organization.md): generated per-service files churn the most but resolve conflicts by regenerating, which authored files can't.

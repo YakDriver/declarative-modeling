@@ -20,8 +20,8 @@ HashiCorp's Provider Code Specification is a down payment at a larger scale. A v
 
 ## Applying it reorders work
 
-In the Terraform AWS provider, converting three list resources to one shared implementation came out at about break-even on lines, paying off only from the fourth resource onward ([list-resource-experiment](../terraform-provider-aws/findings/list-resource-experiment.md)). By itself that's a down payment on converting the rest.
+In the Terraform AWS provider, the first spike of a shared list-resource implementation came out at about break-even on lines across three resources. That was a down payment on converting the rest. Trimming the shared code and the per-resource declarations made the same three resources shorter than the hand-written versions, so the first piece now stands alone ([list-resource-experiment](../terraform-provider-aws/findings/list-resource-experiment.md)).
 
-Normalizing the flatten functions those resources call does stand alone. Their return contracts differ, and making them uniform is cleanup worth having even if no shared implementation ever lands (same finding).
+The test also moved a cleanup. Changing every flatten function to one signature ahead of time looked like a step, but alone it only adds an unused parameter here and reorders arguments there. Changing each one when its resource converts makes every change part of a PR that shortens the provider.
 
 So the normalization goes first and ships on its own. The shared implementation follows once its payoff no longer depends on work that may not happen.

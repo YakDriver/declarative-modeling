@@ -5,9 +5,9 @@ Experiments worth running, and the results already in. Each says the question, t
 ## Still worth running
 
 **Does the shared list-resource implementation scale past Shape A?**
-Question: the spike converted three Shape A resources (paginate and flatten each item); does the four-field typed declaration hold for Shape B (list identifiers, then describe each), the larger population at 65 files?
-Method: convert one Shape B resource, for example `aws_sns_topic_policy`, and test against AWS.
-What would change: whether piece 3's shared implementation extends beyond the ~53 Shape A files or stops there. Shape A was positive and eliminated nothing ([list-resource-experiment](../findings/list-resource-experiment.md)).
+Question: the declaration covers three Shape A resources (paginate and flatten each item); does it hold for Shape B (list identifiers, then describe each), the largest group?
+Method: read several Shape B resources first, then convert one, for example `aws_sns_topic_policy`, and test against AWS.
+What would change: whether the shared implementation extends beyond Shape A or stops there ([list-resource-experiment](../findings/list-resource-experiment.md)).
 
 **Does the `existsType` type-argument mechanism generalize?**
 Question: does replacing the string-named type with a type argument work beyond two resources, across the 492 occurrences?

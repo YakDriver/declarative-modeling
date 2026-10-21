@@ -1,134 +1,102 @@
 # List resource shared-implementation experiment
 
-Measures the provider's list resources, then an experiment that replaced three of them with one shared implementation and tested the result against AWS. Census measured 2026-10-08; experiment run 2026-10-08. The experiment's code is not yet published.
+Three hand-written list resources replaced by one shared implementation and typed declarations, published as [PR 50577](https://github.com/hashicorp/terraform-provider-aws/pull/50577). At three resources the provider is already shorter, and the flatten function signature is the main obstacle to converting the rest. Census at commit `15554cde8c1` (2026-10-20); experiment code at PR 50577 head `34ebfc0af5d` (2026-10-21).
 
 ## List resource population
 
 | | Count |
 |---|---:|
-| `@SDKListResource` | 144 |
-| `@FrameworkListResource` | 103 |
-| Total list resources | 247 |
-| `*_list.go` files (none generated) | 256 |
-| Total lines in those files | 31,320 |
+| `@SDKListResource` | 146 |
+| `@FrameworkListResource` | 112 |
+| `*_list.go` files (none generated) | 267 |
+| Total lines in those files | 32,512 |
 
-Size distribution of the files: min 9, median 112, mean 122, max 444. Only 3 files are 60 lines or fewer; 156 are 61 to 120; 97 exceed 120. Of 72 services with list resources, 51 have between one and three; ec2 has 31, s3 and iam have 12 each.
+File size: min 9, median 112, mean 122, max 444 lines.
 
-Structural uniformity across the 256 files:
-
-| Element present | Files |
-|---|---:|
-| a `List(ctx …)` method | 246 |
-| `ListResultsStream` / `results.` | 243 |
-| a paginator | 168 |
-| `ListResourceConfigSchema` (Framework only) | 103 |
-| AutoFlex (`fwflex.`) | 101 |
-| any filtering | 27 |
-
-A shared base implementation already exists: list resources embed a common type rather than being generated.
-
-```go
-// @SDKListResource("aws_ssm_parameter")
-func newParameterResourceAsListResource() inttypes.ListResourceForSDK {
-	l := parameterListResource{}
-	l.SetResourceSchema(resourceParameter())
-	return &l
-}
-
-type parameterListResource struct {
-	framework.ListResourceWithSDKv2Resource
-}
+```console
+git grep -c '@SDKListResource' 15554cde8c1 -- 'internal/service/*.go'
+git ls-tree -r --name-only 15554cde8c1 internal/service | grep '_list\.go$'
 ```
 
-Generic behavior is embedded, per-resource specialization is written by hand, nothing is generated.
+List resources embed a shared base type, `framework.ListResourceWithSDKv2Resource`, and hand-write `List`. Nothing is generated.
 
-What varies per resource: the service client accessor, the AWS input type, the iterator/paginator function, which attributes are set on each result, whether `IncludeResource` triggers a secondary find, and AutoFlex versus manual mapping. The median body is 112 lines and 97 files exceed 120, so these are not thin wrappers.
+## Shapes
 
-## The experiment
+The 142 SDKv2 list files that embed the base type divide by what `List` does. Counts are from [issue 50576](https://github.com/hashicorp/terraform-provider-aws/issues/50576), classified by reading the bodies at the census commit.
 
-Three list resources were expressed as typed Go declarations consumed by one generic implementation, then tested against AWS.
-
-### Shape taxonomy
-
-The 140 `*_list.go` files that embed `framework.ListResourceWithSDKv2Resource` divide into four shapes by what the `List` body does:
-
-| Shape | Files | Body |
+| Shape | Files | `List` body |
 |---|---:|---|
-| A. paginate, flatten each item directly | 53 | one paginated call returns whole objects |
-| B. list identifiers, then describe each | 65 | paginated call plus a per-item `find*` |
-| C. no flatten, manual `rd.Set` | 14 | attributes set inline |
-| D. other | 8 | |
+| A | 43 | paginate, flatten whole objects straight from the page |
+| B | 69 | paginate summaries, then `find*` each item |
+| C | 25 | no flatten function, `rd.Set` inline |
+| D | 5 | everything else |
 
-Shape A totals 6,685 lines, median 128. Shape B is the larger population and was not attempted. `aws_sns_topic_policy` was an initial candidate and is Shape B: it calls `findTopicAttributesWithValidAWSPrincipalsByARN` per item and derives its display name with `parseTopicNameFromARN`.
+Within a shape only the client accessor, input type, paginator, ID field, and flatten call differ.
 
-### What the declaration needs
+186 functions in `internal/service` turn an SDK paginator into an `iter.Seq2`, all hand-written:
 
-Converted: `aws_cloudwatch_metric_alarm`, `aws_ecr_repository`, `aws_kms_alias`. Four fields were required, two optional. Each is a compile-checked Go symbol; no field holds a string resolved by convention.
+```console
+git grep -h -A12 -E '^func [a-zA-Z]+\(.*\) iter\.Seq2\[' 15554cde8c1 -- 'internal/service/*.go' ':!*_test.go' \
+  | awk '/^func /{if(f&&h)n++; f=1;h=0} /HasMorePages/{h=1} END{if(f&&h)n++; print n}'
+```
+
+## The declaration
+
+Converted: `aws_cloudwatch_metric_alarm`, `aws_ecr_repository`, `aws_kms_alias`, all Shape A.
 
 | Field | Content | Required |
 |---|---|---|
+| schema | the SDKv2 `resourceX()` function | yes |
 | `Items` | closure binding client accessor, input type, and paginator | yes |
 | `ID` | extracts the Terraform resource ID from one item | yes |
 | `Flatten` | the resource's existing flatten function | yes |
-| schema | the SDKv2 `resourceX()` function | yes |
-| `DisplayName` | defaults to `ID` | no |
-| `OnItemError` | defaults to skip-and-log | no |
+| `DisplayName` | defaults to the ID | no |
 
-`Items` collapses four varying things (client accessor, AWS input type, paginator constructor, page field) into one binding, leaving the paginator itself as imperative Go.
+Every field is a compile-checked Go symbol. None holds a string resolved by convention.
 
-### Facts that dissolved rather than became fields
+`DisplayName` is not used by the three, but it earns its place across the population: in 96 of the 146 SDKv2 list files, the expression assigned to `result.DisplayName` differs from the one passed to `rd.SetId` (a text comparison, so approximate).
 
-Five candidates were eliminated, four by observing that the variation was divergence rather than configuration:
+The `ID` extractor is deliberately not derived. `RepositoryName`, `AlarmName`, and `AliasName` suggest a convention, but a wrong derivation produces silently incorrect resource IDs, with no compile or generation error to catch it.
+
+## Facts that dissolved rather than became fields
 
 | Candidate | Outcome |
 |---|---|
 | AWS item type | inferred from `Items` by Go type inference; never authored |
-| display name | equals the ID in all three; defaulted |
-| per-item error policy | ecr aborted the stream, cloudwatch and kms logged and continued; one default chosen |
+| display name | equals the ID in all three; defaults to the ID, so none of them sets the field |
+| per-item error policy | ecr aborted the stream, cloudwatch and kms logged and continued; one default, no field |
 | cleared-ID check | present only in kms, correct everywhere; moved into the shared loop |
 | tflog field setup | identical in all three; moved into the shared loop |
 
-The ID extractor was deliberately not derived. `RepositoryName`, `AlarmName`, and `AliasName` suggest a convention, but a wrong derivation produces silently incorrect resource IDs, with no compile or generation error available to catch it.
+Four of the five were divergence, not configuration (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)).
 
-### The flatten-contract obstacle
+## The flatten signature
 
-`*Flatten` functions have no single signature. Across 130 of them in `internal/service`:
+`Flatten` takes `func(ctx, awsClient, item, d) error`, the signature `skaff/list/list_sdkv2.gtpl` generates, so a scaffolded resource binds unchanged. 16 of the 43 Shape A flatten functions already match it ([issue 50576](https://github.com/hashicorp/terraform-provider-aws/issues/50576)). The rest differ in return type and parameter order.
 
-| Return type | Count |
-|---|---:|
-| `error` | 57 |
-| `diag.Diagnostics` | 38 |
-| none | 35 |
+Across all 130 `*Flatten` functions in `internal/service` on 2026-10-08, return types were `error` 57, `diag.Diagnostics` 38, none 35. An attempt to normalize toward `diag.Diagnostics` failed on `return smarterr.NewError(fmt.Errorf(…))` inside `resourceMetricAlarmFlatten`.
 
-The AWS item parameter is a pointer in 112 and a value in 18.
+Each flatten function has two call sites, `Read` and `List`. Changing one when its resource converts touches it once.
 
-One spec field cannot accept three contracts. Normalizing to `error` was chosen because it is the plurality and composes with smarterr, the provider's stated direction. An attempt to normalize toward `diag.Diagnostics` failed on `return smarterr.NewError(fmt.Errorf(…))` inside `resourceMetricAlarmFlatten`. Cost per resource, each having exactly two call sites:
-
-| Resource | Starting contract | Lines changed |
-|---|---|---:|
-| `aws_cloudwatch_metric_alarm` | `error` | 0 |
-| `aws_ecr_repository` | none | 2 |
-| `aws_kms_alias` | `diag.Diagnostics` | 3 |
-
-Roughly 95 of the 130 are not yet on the `error` contract.
-
-### Line accounting
+## Line accounting
 
 | File | Before | After |
 |---|---:|---:|
-| `cloudwatch/metric_alarm_list.go` | 97 | 52 |
-| `ecr/repository_list.go` | 91 | 49 |
-| `kms/alias_list.go` | 100 | 49 |
-| **Total** | **288** | **150** |
+| `cloudwatch/metric_alarm_list.go` | 97 | 38 |
+| `ecr/repository_list.go` | 91 | 35 |
+| `kms/alias_list.go` | 100 | 35 |
+| **Total** | **288** | **108** |
 
-The shared implementation (`internal/framework/sdk_list_spec.go`) is 120 lines. Net across three resources is +15; break-even falls near the fourth, with roughly 45 lines saved per resource after that. Extrapolating Shape A gives order 6,000 lines, conditional on the flatten normalization above. Of the 49-line converted file, 12 lines are the declaration, 18 the paginator helper, 12 imports, 4 header.
+Shared code is 162 lines: `internal/framework/sdk_list_spec.go` (109) and `internal/iter/paginate.go` (53). Net at three resources is 18 lines shorter, about 60 saved per resource after that. Tests are not counted. The first spike (2026-10-08) converted the same three to 150 lines against 120 of shared code, 15 lines longer.
 
-### Verification
+## Verification
 
-22 acceptance test executions across 6 runs, 11 distinct tests, zero failures: `_List_basic`, `_List_includeResource`, and `_List_regionOverride` for all three resources, plus `_basic` for ecr and kms because their flatten functions are also called from `Read`.
+At PR 50577 head:
 
-`_List_regionOverride` was identified in advance as the likeliest failure: the declaration resolves the service client inside the stream closure, whereas the original resolved it at `List` entry. It passed for all three.
+- `_List_basic`, `_List_includeResource`, `_List_regionOverride`, and `_basic` pass for all three resources, 12 tests (output in the PR). `_basic` is included because each flatten is also called from `Read`.
+- Registration is byte-identical after `make gen PKG=<service>` for ecr, kms, and cloudwatch.
+- `internal/framework/sdk_list_spec_test.go` covers the branches acceptance tests can't reach: iterator error, flatten error, cleared ID, display name, and early stop.
 
-Registration is byte-identical after `make gen` for all three services, because the factory function names were preserved and only their bodies replaced. Provider-wide `go build ./...`, the four affected packages' unit tests, `make quick-fix`, and `make copyright` all pass.
+## Not attempted
 
-Signals that did not appear during the conversion: no per-resource custom-code knobs, no string-named function references, no generator-specific flags. The declaration stayed at four required fields across all three resources. This was tested only within Shape A; Shape B was not attempted.
+Shape B, the largest group. It sets attributes from the summary before a conditional detail fetch, so a shared version needs a second type parameter and a hook Shape A never exercises. `aws_sns_topic_policy` was an early candidate and is Shape B: it calls `findTopicAttributesWithValidAWSPrincipalsByARN` per item and derives its display name with `parseTopicNameFromARN`.

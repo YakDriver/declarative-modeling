@@ -18,14 +18,14 @@ The frequently cited prizes, generating Exists helpers or list resources, are av
 
 ## What the list-resource experiment showed
 
-Three list resources (`aws_cloudwatch_metric_alarm`, `aws_ecr_repository`, `aws_kms_alias`) were re-expressed as a four-field typed declaration consumed by one 120-line generic implementation, verified by 22 acceptance test executions with no failures ([list-resource-experiment](../findings/list-resource-experiment.md)). All three were one structural shape: paginate, then flatten each item directly.
+Three list resources (`aws_cloudwatch_metric_alarm`, `aws_ecr_repository`, `aws_kms_alias`) were re-expressed as typed declarations consumed by one shared implementation, published as [PR 50577](https://github.com/hashicorp/terraform-provider-aws/pull/50577) and passing their acceptance tests ([list-resource-experiment](../findings/list-resource-experiment.md)). All three were one structural shape: paginate, then flatten each item directly.
 
 - The declarative layer did not relocate the complexity for this shape. None of the predicted failure signals appeared: no custom per-resource knobs, no string-named function references, no generator-specific flags. Every field is a compile-checked Go symbol.
-- The metadata was smaller than expected; the prerequisite refactor was the work. Four required fields, and five candidate facts dissolved entirely. The real cost is that `*Flatten` carries three different return contracts across 130 functions (57 `error`, 38 `diag.Diagnostics`, 35 none), and one spec field cannot accept three.
+- The metadata was smaller than expected; the flatten signature was the work. Four required fields, and five candidate facts dissolved. The declaration takes the signature skaff generates, and most existing Shape A flatten functions don't match it yet.
 - Four of the five dissolved facts were divergence, not configuration (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)): per-item error policy, a cleared-ID check, display-name derivation, and tflog setup differed between the three resources with no apparent intent. Writing the spec straight from the three bodies would have turned all four into knobs.
-- Economics: 288 lines became 150, against 120 lines of shared implementation. Break-even is near the fourth resource.
+- Economics: shorter at three resources, counting the shared code.
 
-Not settled: the larger structural population, 65 files that list identifiers and then describe each, was not attempted. Three resources of one shape is a positive signal, not a cleared path.
+Not settled: Shape B, the largest group, which lists identifiers and then describes each, was not attempted. Three resources of one shape is a positive signal, not a cleared path.
 
 ## The model-shaped trap
 
