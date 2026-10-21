@@ -47,12 +47,13 @@ Converted: `aws_cloudwatch_metric_alarm`, `aws_ecr_repository`, `aws_kms_alias`,
 | Field | Content | Required |
 |---|---|---|
 | schema | the SDKv2 `resourceX()` function | yes |
+| type argument | the AWS item type, as in `SDKListSpec[awstypes.Repository]` | yes |
 | `Items` | closure binding client accessor, input type, and paginator | yes |
 | `ID` | extracts the Terraform resource ID from one item | yes |
 | `Flatten` | the resource's existing flatten function | yes |
 | `DisplayName` | defaults to the ID | no |
 
-Every field is a compile-checked Go symbol. None holds a string resolved by convention.
+Every field is a compile-checked Go symbol. None holds a string resolved by convention. The item type is written once per resource because Go doesn't infer type arguments in a composite literal, and a wrong one fails to compile against `Items` and `Flatten`.
 
 `DisplayName` is not used by the three, but it earns its place across the population: in 96 of the 146 SDKv2 list files, the expression assigned to `result.DisplayName` differs from the one passed to `rd.SetId` (a text comparison, so approximate).
 
@@ -62,13 +63,12 @@ The `ID` extractor is deliberately not derived. `RepositoryName`, `AlarmName`, a
 
 | Candidate | Outcome |
 |---|---|
-| AWS item type | inferred from `Items` by Go type inference; never authored |
 | display name | equals the ID in all three; defaults to the ID, so none of them sets the field |
 | per-item error policy | ecr aborted the stream, cloudwatch and kms logged and continued; one default, no field |
 | cleared-ID check | present only in kms, correct everywhere; moved into the shared loop |
 | tflog field setup | identical in all three; moved into the shared loop |
 
-Four of the five were divergence, not configuration (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)).
+All four were divergence, not configuration (see [divergence-is-not-configuration](../../concepts/divergence-is-not-configuration.md)).
 
 ## The flatten signature
 
