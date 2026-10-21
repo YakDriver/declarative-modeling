@@ -6,7 +6,7 @@ The distinction worth holding: a field is warranted when two cases *need* to dif
 
 ## A worked example
 
-The [list-resource experiment](../terraform-provider-aws/findings/list-resource-experiment.md) is a small case of this. Three resources that each enumerate objects from a cloud API (a metric alarm, a container-registry repository, an encryption-key alias) were rewritten to share one 120-line implementation. Collapsing them meant confronting five facts that differed across the three. Four of the five turned out to be differences with no apparent intent behind them:
+The [list-resource experiment](../terraform-provider-aws/findings/list-resource-experiment.md) is a small case of this. Three resources that each enumerate objects from a cloud API (a metric alarm, a container-registry repository, an encryption-key alias) were rewritten to share one implementation. Collapsing them meant confronting five facts that differed across the three. Four of the five turned out to be differences with no apparent intent behind them:
 
 - On a bad item in the stream, one resource aborted the whole listing; the other two logged the item and continued.
 - Only one of the three checked whether an earlier step had cleared the object's ID. The check was correct everywhere; the other two just lacked it.
